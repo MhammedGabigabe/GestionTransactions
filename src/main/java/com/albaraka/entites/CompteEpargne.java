@@ -1,4 +1,7 @@
 package main.java.com.albaraka.entites;
 
-public class CompteEpargne {
+public final class CompteEpargne extends  Compte{
+
+    private double tauxInteret;
+
 }

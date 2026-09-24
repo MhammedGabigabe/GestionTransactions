@@ -1,4 +1,7 @@
 package main.java.com.albaraka.entites;
 
-public class CompteCourant {
+public final class CompteCourant extends Compte{
+
+    private double decouvertAutorise;
+
 }
