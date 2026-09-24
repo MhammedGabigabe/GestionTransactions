@@ -143,5 +143,30 @@ public class ClientDAO {
         }
     }
 
+    public int delete(Long id) {
+
+        String sql = """
+            DELETE FROM clients
+            WHERE id = ?
+            """;
+
+        try (
+                Connection connection = DatabaseConnection.getConnexion();
+                PreparedStatement statement = connection.prepareStatement(sql)
+        ) {
+
+            statement.setLong(1, id);
+
+            return statement.executeUpdate();
+
+        } catch (SQLException e) {
+
+            throw new RuntimeException(
+                    "Erreur lors de la suppression du client",
+                    e
+            );
+        }
+    }
+
 
 }
