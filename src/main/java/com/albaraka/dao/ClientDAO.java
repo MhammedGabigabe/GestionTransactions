@@ -5,7 +5,10 @@ import main.java.com.albaraka.utils.DatabaseConnection;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class ClientDAO {
@@ -70,6 +73,43 @@ public class ClientDAO {
 
             throw new RuntimeException(
                     "Erreur lors de la recherche du client",
+                    e
+            );
+        }
+    }
+
+    public List<Client> findAll() {
+
+        String sql = """
+            SELECT id, nom, email
+            FROM clients
+            """;
+
+        List<Client> clients = new ArrayList<>();
+
+        try (
+                Connection connection = DatabaseConnection.getConnexion();
+                PreparedStatement statement = connection.prepareStatement(sql);
+                ResultSet resultSet = statement.executeQuery()
+        ) {
+
+            while (resultSet.next()) {
+
+                Client client = new Client(
+                        resultSet.getLong("id"),
+                        resultSet.getString("nom"),
+                        resultSet.getString("email")
+                );
+
+                clients.add(client);
+            }
+
+            return clients;
+
+        } catch (SQLException e) {
+
+            throw new RuntimeException(
+                    "Erreur lors de la récupération des clients",
                     e
             );
         }
