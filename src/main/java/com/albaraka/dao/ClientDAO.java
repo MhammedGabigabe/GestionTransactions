@@ -115,5 +115,33 @@ public class ClientDAO {
         }
     }
 
+    public int update(Client client) {
+
+        String sql = """
+            UPDATE clients
+            SET nom = ?, email = ?
+            WHERE id = ?
+            """;
+
+        try (
+                Connection connection = DatabaseConnection.getConnexion();
+                PreparedStatement statement = connection.prepareStatement(sql)
+        ) {
+
+            statement.setString(1, client.nom());
+            statement.setString(2, client.email());
+            statement.setLong(3, client.id());
+
+            return statement.executeUpdate();
+
+        } catch (SQLException e) {
+
+            throw new RuntimeException(
+                    "Erreur lors de la modification du client",
+                    e
+            );
+        }
+    }
+
 
 }
