@@ -15,59 +15,63 @@ public class ClientDAO {
 
     public void save(Client client) {
 
-        String sql = """
-                INSERT INTO clients (nom, email)
-                VALUES (?, ?)
-                """;
+        String sql = "INSERT INTO clients (nom, email) VALUES (?, ?)";
 
-        try (
-                Connection connection = DatabaseConnection.getConnexion();
-                PreparedStatement statement = connection.prepareStatement(sql)
-        ) {
+        try {
+            Connection connection = DatabaseConnection.getConnexion();
+
+            PreparedStatement statement = connection.prepareStatement(sql);
 
             statement.setString(1, client.nom());
             statement.setString(2, client.email());
 
             statement.executeUpdate();
 
+            statement.close();
+            connection.close();
+
         } catch (SQLException e) {
-            throw new RuntimeException(
-                    "Erreur lors de l'ajout du client",
-                    e
-            );
+            e.printStackTrace();
         }
     }
 
     public Optional<Client> findById(Long id) {
 
-        String sql = """
-            SELECT id, nom, email
-            FROM clients
-            WHERE id = ?
-            """;
+        String sql = "SELECT id, nom, email FROM clients WHERE id = ?";
 
-        try (
-                Connection connection = DatabaseConnection.getConnexion();
-                PreparedStatement statement = connection.prepareStatement(sql)
-        ) {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
 
+        try {
+
+            connection = DatabaseConnection.getConnexion();
+
+            statement = connection.prepareStatement(sql);
             statement.setLong(1, id);
 
-            try (var resultSet = statement.executeQuery()) {
+            resultSet = statement.executeQuery();
 
-                if (resultSet.next()) {
+            if (resultSet.next()) {
 
-                    Client client = new Client(
-                            resultSet.getLong("id"),
-                            resultSet.getString("nom"),
-                            resultSet.getString("email")
-                    );
+                Client client = new Client(
+                        resultSet.getLong("id"),
+                        resultSet.getString("nom"),
+                        resultSet.getString("email")
+                );
 
-                    return Optional.of(client);
-                }
+                resultSet.close();
+                statement.close();
+                connection.close();
 
-                return Optional.empty();
+                return Optional.of(client);
             }
+
+            resultSet.close();
+            statement.close();
+            connection.close();
+
+            return Optional.empty();
 
         } catch (SQLException e) {
 
@@ -80,10 +84,7 @@ public class ClientDAO {
 
     public List<Client> findAll() {
 
-        String sql = """
-            SELECT id, nom, email
-            FROM clients
-            """;
+        String sql = "SELECT id, nom, email FROM clients";
 
         List<Client> clients = new ArrayList<>();
 
@@ -117,11 +118,7 @@ public class ClientDAO {
 
     public int update(Client client) {
 
-        String sql = """
-            UPDATE clients
-            SET nom = ?, email = ?
-            WHERE id = ?
-            """;
+        String sql = " UPDATE clients SET nom = ?, email = ? WHERE id = ? ";
 
         try (
                 Connection connection = DatabaseConnection.getConnexion();
@@ -145,10 +142,7 @@ public class ClientDAO {
 
     public int delete(Long id) {
 
-        String sql = """
-            DELETE FROM clients
-            WHERE id = ?
-            """;
+        String sql = " DELETE FROM clients WHERE id = ? ";
 
         try (
                 Connection connection = DatabaseConnection.getConnexion();
