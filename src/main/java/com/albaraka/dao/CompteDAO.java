@@ -98,6 +98,36 @@ public class CompteDAO {
                 "Type de compte inconnu : " + typeCompte
         );
     }
+
+    public Optional<Compte> findById(Long id) {
+
+        String sql = "SELECT id, numero, solde, id_client, type_compte, decouvert_autorise, taux_interet FROM comptes WHERE id = ?";
+
+        try (
+                Connection connection = DatabaseConnection.getConnexion();
+                PreparedStatement statement = connection.prepareStatement(sql)
+        ) {
+
+            statement.setLong(1, id);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+
+                if (resultSet.next()) {
+
+                    return Optional.of(mapCompte(resultSet));
+                }
+
+                return Optional.empty();
+            }
+
+        } catch (SQLException e) {
+
+            throw new RuntimeException(
+                    "Erreur lors de la recherche du compte",
+                    e
+            );
+        }
+    }
 }
 
 
