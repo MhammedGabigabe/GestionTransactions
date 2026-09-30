@@ -129,4 +129,38 @@ public class TransactionDAO {
         }
     }
 
+    public void update(Transaction transaction) {
+
+        String sql = """
+                UPDATE transactions
+                SET date_transaction = ?,
+                    montant = ?,
+                    type = ?,
+                    lieu = ?,
+                    id_compte = ?
+                WHERE id = ?
+                """;
+
+        try (
+                Connection connection = DatabaseConnection.getConnexion();
+                PreparedStatement statement = connection.prepareStatement(sql)
+        ) {
+
+            statement.setDate(1, Date.valueOf(transaction.date()));
+            statement.setDouble(2, transaction.montant());
+            statement.setString(3, transaction.type().name());
+            statement.setString(4, transaction.lieu());
+            statement.setLong(5, transaction.idCompte());
+            statement.setLong(6, transaction.id());
+
+            statement.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(
+                    "Erreur lors de la modification de la transaction", e
+            );
+        }
+    }
+
+
 }
