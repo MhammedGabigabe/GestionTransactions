@@ -163,6 +163,63 @@ public class CompteDAO {
         }
     }
 
+    public void update(Compte compte) {
+
+        String sql = """
+                UPDATE comptes
+                SET numero = ?,
+                    solde = ?,
+                    id_client = ?,
+                    type_compte = ?,
+                    decouvert_autorise = ?,
+                    taux_interet = ?
+                WHERE id = ?
+                """;
+
+        try (
+                Connection connection = DatabaseConnection.getConnexion();
+                PreparedStatement statement = connection.prepareStatement(sql)
+        ) {
+
+            statement.setString(1, compte.getNumero());
+            statement.setDouble(2, compte.getSolde());
+            statement.setLong(3, compte.getIdClient());
+
+            if (compte instanceof CompteCourant compteCourant) {
+
+                statement.setString(4, "COURANT");
+
+                statement.setDouble(
+                        5,
+                        compteCourant.getDecouvertAutorise()
+                );
+
+                statement.setNull(6, Types.DECIMAL);
+
+            } else if (compte instanceof CompteEpargne compteEpargne) {
+
+                statement.setString(4, "EPARGNE");
+
+                statement.setNull(5, Types.DECIMAL);
+
+                statement.setDouble(
+                        6,
+                        compteEpargne.getTauxInteret()
+                );
+            }
+
+            statement.setLong(7, compte.getId());
+
+            statement.executeUpdate();
+
+        } catch (SQLException e) {
+
+            throw new RuntimeException(
+                    "Erreur lors de la modification du compte",
+                    e
+            );
+        }
+    }
 
 
 }
