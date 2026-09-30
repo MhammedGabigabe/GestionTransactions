@@ -246,6 +246,44 @@ public class CompteDAO {
         }
     }
 
+    public List<Compte> findByClientId(Long idClient) {
+
+        String sql = """
+                SELECT id, numero, solde, id_client,
+                       type_compte, decouvert_autorise, taux_interet
+                FROM comptes
+                WHERE id_client = ?
+                """;
+
+        List<Compte> comptes = new ArrayList<>();
+
+        try (
+                Connection connection = DatabaseConnection.getConnexion();
+                PreparedStatement statement = connection.prepareStatement(sql)
+        ) {
+
+            statement.setLong(1, idClient);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+
+                while (resultSet.next()) {
+
+                    comptes.add(mapCompte(resultSet));
+                }
+
+                return comptes;
+            }
+
+        } catch (SQLException e) {
+
+            throw new RuntimeException(
+                    "Erreur lors de la recherche des comptes du client",
+                    e
+            );
+        }
+    }
+
+
 }
 
 
