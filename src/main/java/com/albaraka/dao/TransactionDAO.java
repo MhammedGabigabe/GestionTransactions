@@ -6,6 +6,7 @@ import main.java.com.albaraka.utils.DatabaseConnection;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.util.Optional;
 
 public class TransactionDAO {
     public void save(Transaction transaction) {
@@ -64,5 +65,39 @@ public class TransactionDAO {
                 idCompte
         );
     }
+
+    public Optional<Transaction> findById(Long id) {
+
+        String sql = """
+                SELECT id, date_transaction, montant,
+                       type, lieu, id_compte
+                FROM transactions
+                WHERE id = ?
+                """;
+
+        try (
+                Connection connection = DatabaseConnection.getConnexion();
+                PreparedStatement statement = connection.prepareStatement(sql)
+        ) {
+
+            statement.setLong(1, id);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+
+                if (resultSet.next()) {
+                    return Optional.of(mapTransaction(resultSet));
+                }
+
+                return Optional.empty();
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(
+                    "Erreur lors de la recherche de la transaction", e
+            );
+        }
+    }
+
+
 
 }
