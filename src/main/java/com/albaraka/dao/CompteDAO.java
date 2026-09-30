@@ -5,10 +5,8 @@ import main.java.com.albaraka.entites.CompteCourant;
 import main.java.com.albaraka.entites.CompteEpargne;
 import main.java.com.albaraka.utils.DatabaseConnection;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Types;
+import java.sql.*;
+import java.util.Optional;
 
 public class CompteDAO {
 
@@ -59,5 +57,47 @@ public class CompteDAO {
         }
     }
 
+    private Compte mapCompte(ResultSet resultSet) throws SQLException {
 
+        Long id = resultSet.getLong("id");
+        String numero = resultSet.getString("numero");
+        double solde = resultSet.getDouble("solde");
+        Long idClient = resultSet.getLong("id_client");
+
+        String typeCompte = resultSet.getString("type_compte");
+
+        if ("COURANT".equals(typeCompte)) {
+
+            double decouvertAutorise =
+                    resultSet.getDouble("decouvert_autorise");
+
+            return new CompteCourant(
+                    id,
+                    numero,
+                    solde,
+                    idClient,
+                    decouvertAutorise
+            );
+        }
+
+        if ("EPARGNE".equals(typeCompte)) {
+
+            double tauxInteret =
+                    resultSet.getDouble("taux_interet");
+
+            return new CompteEpargne(
+                    id,
+                    numero,
+                    solde,
+                    idClient,
+                    tauxInteret
+            );
+        }
+
+        throw new IllegalArgumentException(
+                "Type de compte inconnu : " + typeCompte
+        );
+    }
 }
+
+
