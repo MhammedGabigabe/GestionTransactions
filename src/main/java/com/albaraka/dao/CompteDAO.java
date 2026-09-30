@@ -6,6 +6,8 @@ import main.java.com.albaraka.entites.CompteEpargne;
 import main.java.com.albaraka.utils.DatabaseConnection;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class CompteDAO {
@@ -128,6 +130,41 @@ public class CompteDAO {
             );
         }
     }
+
+    public List<Compte> findAll() {
+
+        String sql = """
+                SELECT id, numero, solde, id_client,
+                       type_compte, decouvert_autorise, taux_interet
+                FROM comptes
+                """;
+
+        List<Compte> comptes = new ArrayList<>();
+
+        try (
+                Connection connection = DatabaseConnection.getConnexion();
+                PreparedStatement statement = connection.prepareStatement(sql);
+                ResultSet resultSet = statement.executeQuery()
+        ) {
+
+            while (resultSet.next()) {
+
+                comptes.add(mapCompte(resultSet));
+            }
+
+            return comptes;
+
+        } catch (SQLException e) {
+
+            throw new RuntimeException(
+                    "Erreur lors de la récupération des comptes",
+                    e
+            );
+        }
+    }
+
+
+
 }
 
 
