@@ -1,12 +1,11 @@
 package main.java.com.albaraka.dao;
 
 import main.java.com.albaraka.entites.Transaction;
+import main.java.com.albaraka.entites.TypeTransaction;
 import main.java.com.albaraka.utils.DatabaseConnection;
 
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
+import java.time.LocalDate;
 
 public class TransactionDAO {
     public void save(Transaction transaction) {
@@ -36,4 +35,34 @@ public class TransactionDAO {
             );
         }
     }
+
+    private Transaction mapTransaction(ResultSet resultSet)
+            throws SQLException {
+
+        Long id = resultSet.getLong("id");
+
+        LocalDate date = resultSet
+                .getDate("date_transaction")
+                .toLocalDate();
+
+        double montant = resultSet.getDouble("montant");
+
+        TypeTransaction type = TypeTransaction.valueOf(
+                resultSet.getString("type")
+        );
+
+        String lieu = resultSet.getString("lieu");
+
+        Long idCompte = resultSet.getLong("id_compte");
+
+        return new Transaction(
+                id,
+                date,
+                montant,
+                type,
+                lieu,
+                idCompte
+        );
+    }
+
 }
