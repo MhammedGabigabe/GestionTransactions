@@ -221,6 +221,30 @@ public class CompteDAO {
         }
     }
 
+    public void delete(Long id) {
+
+        String sql = """
+                DELETE FROM comptes
+                WHERE id = ?
+                """;
+
+        try (
+                Connection connection = DatabaseConnection.getConnexion();
+                PreparedStatement statement = connection.prepareStatement(sql)
+        ) {
+
+            statement.setLong(1, id);
+
+            statement.executeUpdate();
+
+        } catch (SQLException e) {
+
+            throw new RuntimeException(
+                    "Erreur lors de la suppression du compte",
+                    e
+            );
+        }
+    }
 
 }
 
