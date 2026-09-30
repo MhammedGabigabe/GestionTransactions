@@ -6,6 +6,8 @@ import main.java.com.albaraka.utils.DatabaseConnection;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class TransactionDAO {
@@ -98,6 +100,33 @@ public class TransactionDAO {
         }
     }
 
+    public List<Transaction> findAll() {
 
+        String sql = """
+                SELECT id, date_transaction, montant,
+                       type, lieu, id_compte
+                FROM transactions
+                """;
+
+        List<Transaction> transactions = new ArrayList<>();
+
+        try (
+                Connection connection = DatabaseConnection.getConnexion();
+                PreparedStatement statement = connection.prepareStatement(sql);
+                ResultSet resultSet = statement.executeQuery()
+        ) {
+
+            while (resultSet.next()) {
+                transactions.add(mapTransaction(resultSet));
+            }
+
+            return transactions;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(
+                    "Erreur lors de la récupération des transactions", e
+            );
+        }
+    }
 
 }
