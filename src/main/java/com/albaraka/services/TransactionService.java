@@ -56,4 +56,16 @@ public class TransactionService {
                 .sorted(Comparator.comparing(Transaction::date))
                 .toList();
     }
+
+    public List<Transaction> filtrerParMontant(
+            List<Transaction> transactions,
+            double montantMinimum
+    ) {
+
+        return transactions.stream()
+                .filter(transaction ->
+                        transaction.montant() >= montantMinimum
+                )
+                .toList();
+    }
 }
