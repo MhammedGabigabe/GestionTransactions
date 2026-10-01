@@ -283,7 +283,39 @@ public class CompteDAO {
         }
     }
 
+    public Optional<Compte> findByNumero(String numero) {
 
+        String sql = """
+            
+                SELECT id, numero, solde, id_client,
+                   type_compte, decouvert_autorise, taux_interet
+            FROM comptes
+            WHERE numero = ?
+            """;
+
+        try (
+                Connection connection = DatabaseConnection.getConnexion();
+                PreparedStatement statement = connection.prepareStatement(sql)
+        ) {
+
+            statement.setString(1, numero);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+
+                if (resultSet.next()) {
+                    return Optional.of(mapCompte(resultSet));
+                }
+
+                return Optional.empty();
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(
+                    "Erreur lors de la recherche du compte par numéro", e
+    );
+        }
 }
+
+    }
 
 
