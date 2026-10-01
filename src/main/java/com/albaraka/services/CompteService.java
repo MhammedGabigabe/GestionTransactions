@@ -32,4 +32,8 @@ public class CompteService {
     public List<Compte> rechercherParClient(Long idClient) {
         return compteDAO.findByClientId(idClient);
     }
+
+    public List<Compte> listerTous() {
+        return compteDAO.findAll();
+    }
 }
