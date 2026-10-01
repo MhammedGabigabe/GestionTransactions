@@ -48,4 +48,11 @@ public class CompteService {
                 .stream()
                 .max(Comparator.comparingDouble(Compte::getSolde));
     }
+
+    public Optional<Compte> trouverSoldeMinimum() {
+
+        return compteDAO.findAll()
+                .stream()
+                .min(Comparator.comparingDouble(Compte::getSolde));
+    }
 }
