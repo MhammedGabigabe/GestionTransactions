@@ -12,18 +12,15 @@ public class Main {
 
     public static void main(String[] args) {
 
-        // DAO
         ClientDAO clientDAO = new ClientDAO();
         CompteDAO compteDAO = new CompteDAO();
         TransactionDAO transactionDAO = new TransactionDAO();
 
-        // Services
         ClientService clientService = new ClientService(clientDAO);
         CompteService compteService = new CompteService(compteDAO);
         TransactionService transactionService =
                 new TransactionService(transactionDAO, compteDAO);
 
-        // Interface console
         MenuUI menuUI = new MenuUI(clientService, compteService, transactionService);
 
         menuUI.demarrer();
