@@ -4,6 +4,8 @@ import main.java.com.albaraka.dao.CompteDAO;
 import main.java.com.albaraka.dao.TransactionDAO;
 import main.java.com.albaraka.entites.Transaction;
 
+import java.util.Comparator;
+import java.util.List;
 import java.util.Optional;
 
 public class TransactionService {
@@ -32,5 +34,13 @@ public class TransactionService {
 
     public Optional<Transaction> rechercherParId(Long id) {
         return transactionDAO.findById(id);
+    }
+
+    public List<Transaction> listerParCompte(Long idCompte) {
+
+        return transactionDAO.findByCompteId(idCompte)
+                .stream()
+                .sorted(Comparator.comparing(Transaction::date))
+                .toList();
     }
 }
