@@ -3,6 +3,7 @@ package main.java.com.albaraka.services;
 import main.java.com.albaraka.dao.CompteDAO;
 import main.java.com.albaraka.entites.Compte;
 
+import java.util.List;
 import java.util.Optional;
 
 public class CompteService {
@@ -26,5 +27,9 @@ public class CompteService {
 
     public Optional<Compte> rechercherParId(Long id) {
         return compteDAO.findById(id);
+    }
+
+    public List<Compte> rechercherParClient(Long idClient) {
+        return compteDAO.findByClientId(idClient);
     }
 }
