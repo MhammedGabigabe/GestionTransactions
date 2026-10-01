@@ -3,6 +3,8 @@ package main.java.com.albaraka.services;
 import main.java.com.albaraka.dao.ClientDAO;
 import main.java.com.albaraka.entites.Client;
 
+import java.util.Optional;
+
 public class ClientService {
     private final ClientDAO clientDAO;
 
@@ -20,5 +22,9 @@ public class ClientService {
 
     public void supprimer(Long id) {
         clientDAO.delete(id);
+    }
+
+    public Optional<Client> rechercherParId(Long id) {
+        return clientDAO.findById(id);
     }
 }
