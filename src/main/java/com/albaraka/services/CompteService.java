@@ -13,4 +13,8 @@ public class CompteService {
     public void creer(Compte compte) {
         compteDAO.save(compte);
     }
+
+    public void modifier(Compte compte) {
+        compteDAO.update(compte);
+    }
 }
