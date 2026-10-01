@@ -1,11 +1,16 @@
 package main.java.com.albaraka.services;
 
 import main.java.com.albaraka.dao.CompteDAO;
+import main.java.com.albaraka.entites.Compte;
 
 public class CompteService {
     private final CompteDAO compteDAO;
 
     public CompteService(CompteDAO compteDAO) {
         this.compteDAO = compteDAO;
+    }
+
+    public void creer(Compte compte) {
+        compteDAO.save(compte);
     }
 }
