@@ -43,4 +43,17 @@ public class TransactionService {
                 .sorted(Comparator.comparing(Transaction::date))
                 .toList();
     }
+
+    public List<Transaction> listerParClient(Long idClient) {
+
+        return compteDAO.findByClientId(idClient)
+                .stream()
+                .flatMap(compte ->
+                        transactionDAO
+                                .findByCompteId(compte.getId())
+                                .stream()
+                )
+                .sorted(Comparator.comparing(Transaction::date))
+                .toList();
+    }
 }
