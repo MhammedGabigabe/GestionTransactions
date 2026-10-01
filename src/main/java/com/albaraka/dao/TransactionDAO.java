@@ -220,4 +220,35 @@ public class TransactionDAO {
         }
     }
 
+    public List<Transaction> findAllGlobal() {
+
+        String sql = """
+                SELECT id, date_transaction, montant,
+                       type, lieu, id_compte
+                FROM transactions
+                ORDER BY date_transaction DESC
+                """;
+
+        List<Transaction> transactions = new ArrayList<>();
+
+        try (
+                Connection connection = DatabaseConnection.getConnexion();
+                PreparedStatement statement = connection.prepareStatement(sql);
+                ResultSet resultSet = statement.executeQuery()
+        ) {
+
+            while (resultSet.next()) {
+                transactions.add(mapTransaction(resultSet));
+            }
+
+            return transactions;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(
+                    "Erreur lors de la recherche globale des transactions",
+                    e
+            );
+        }
+    }
+
 }
