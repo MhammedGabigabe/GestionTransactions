@@ -17,4 +17,8 @@ public class CompteService {
     public void modifier(Compte compte) {
         compteDAO.update(compte);
     }
+
+    public void supprimer(Long id) {
+        compteDAO.delete(id);
+    }
 }
