@@ -3,6 +3,8 @@ package main.java.com.albaraka.services;
 import main.java.com.albaraka.dao.CompteDAO;
 import main.java.com.albaraka.entites.Compte;
 
+import java.util.Optional;
+
 public class CompteService {
     private final CompteDAO compteDAO;
 
@@ -20,5 +22,9 @@ public class CompteService {
 
     public void supprimer(Long id) {
         compteDAO.delete(id);
+    }
+
+    public Optional<Compte> rechercherParId(Long id) {
+        return compteDAO.findById(id);
     }
 }
