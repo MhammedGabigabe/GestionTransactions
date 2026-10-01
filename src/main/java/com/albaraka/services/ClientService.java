@@ -14,5 +14,7 @@ public class ClientService {
         clientDAO.save(client);
     }
 
-
+    public void modifier(Client client) {
+        clientDAO.update(client);
+    }
 }
