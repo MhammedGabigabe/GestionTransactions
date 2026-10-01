@@ -17,4 +17,8 @@ public class ClientService {
     public void modifier(Client client) {
         clientDAO.update(client);
     }
+
+    public void supprimer(Long id) {
+        clientDAO.delete(id);
+    }
 }
