@@ -36,4 +36,8 @@ public class CompteService {
     public List<Compte> listerTous() {
         return compteDAO.findAll();
     }
+
+    public Optional<Compte> rechercherParNumero(String numero) {
+        return compteDAO.findByNumero(numero);
+    }
 }
