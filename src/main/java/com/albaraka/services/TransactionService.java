@@ -3,6 +3,7 @@ package main.java.com.albaraka.services;
 import main.java.com.albaraka.dao.CompteDAO;
 import main.java.com.albaraka.dao.TransactionDAO;
 import main.java.com.albaraka.entites.Transaction;
+import main.java.com.albaraka.entites.TypeTransaction;
 
 import java.util.Comparator;
 import java.util.List;
@@ -57,15 +58,16 @@ public class TransactionService {
                 .toList();
     }
 
-    public List<Transaction> filtrerParMontant(
+    public List<Transaction> filtrerParType(
             List<Transaction> transactions,
-            double montantMinimum
+            TypeTransaction type
     ) {
 
         return transactions.stream()
                 .filter(transaction ->
-                        transaction.montant() >= montantMinimum
+                        transaction.type() == type
                 )
                 .toList();
     }
+
 }
