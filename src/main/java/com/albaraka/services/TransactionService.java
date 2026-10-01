@@ -23,4 +23,8 @@ public class TransactionService {
     public void modifier(Transaction transaction) {
         transactionDAO.update(transaction);
     }
+
+    public void supprimer(Long id) {
+        transactionDAO.delete(id);
+    }
 }
