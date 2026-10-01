@@ -6,10 +6,8 @@ import main.java.com.albaraka.entites.Transaction;
 import main.java.com.albaraka.entites.TypeTransaction;
 
 import java.time.LocalDate;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
-import java.util.OptionalDouble;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class TransactionService {
     private final TransactionDAO transactionDAO;
@@ -112,5 +110,17 @@ public class TransactionService {
         return transactions.stream()
                 .mapToDouble(Transaction::montant)
                 .average();
+    }
+
+    public Map<TypeTransaction, List<Transaction>> regrouperParType(
+            List<Transaction> transactions
+    ) {
+
+        return transactions.stream()
+                .collect(
+                        Collectors.groupingBy(
+                                Transaction::type
+                        )
+                );
     }
 }
