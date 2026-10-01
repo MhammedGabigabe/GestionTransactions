@@ -96,4 +96,11 @@ public class TransactionService {
                 )
                 .toList();
     }
+
+    public double calculerTotal(List<Transaction> transactions) {
+
+        return transactions.stream()
+                .mapToDouble(Transaction::montant)
+                .sum();
+    }
 }
