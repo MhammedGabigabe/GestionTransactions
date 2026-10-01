@@ -3,6 +3,7 @@ package main.java.com.albaraka.services;
 import main.java.com.albaraka.dao.CompteDAO;
 import main.java.com.albaraka.entites.Compte;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,5 +40,12 @@ public class CompteService {
 
     public Optional<Compte> rechercherParNumero(String numero) {
         return compteDAO.findByNumero(numero);
+    }
+
+    public Optional<Compte> trouverSoldeMaximum() {
+
+        return compteDAO.findAll()
+                .stream()
+                .max(Comparator.comparingDouble(Compte::getSolde));
     }
 }
