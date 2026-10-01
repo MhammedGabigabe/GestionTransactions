@@ -185,4 +185,39 @@ public class TransactionDAO {
         }
     }
 
+    public List<Transaction> findByCompteId(Long idCompte) {
+
+        String sql = """
+                SELECT id, date_transaction, montant,
+                       type, lieu, id_compte
+                FROM transactions
+                WHERE id_compte = ?
+                """;
+
+        List<Transaction> transactions = new ArrayList<>();
+
+        try (
+                Connection connection = DatabaseConnection.getConnexion();
+                PreparedStatement statement = connection.prepareStatement(sql)
+        ) {
+
+            statement.setLong(1, idCompte);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+
+                while (resultSet.next()) {
+                    transactions.add(mapTransaction(resultSet));
+                }
+
+                return transactions;
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(
+                    "Erreur lors de la recherche des transactions du compte",
+                    e
+            );
+        }
+    }
+
 }
