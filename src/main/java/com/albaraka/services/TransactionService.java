@@ -85,4 +85,15 @@ public class TransactionService {
                 .toList();
     }
 
+    public List<Transaction> filtrerParLieu(
+            List<Transaction> transactions,
+            String lieu
+    ) {
+
+        return transactions.stream()
+                .filter(transaction ->
+                        transaction.lieu().equalsIgnoreCase(lieu)
+                )
+                .toList();
+    }
 }
