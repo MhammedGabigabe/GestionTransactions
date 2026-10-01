@@ -70,6 +70,18 @@ public class TransactionService {
                 .toList();
     }
 
+    public List<Transaction> filtrerParMontant(
+            List<Transaction> transactions,
+            double montantMinimum
+    ) {
+
+        return transactions.stream()
+                .filter(transaction ->
+                        transaction.montant() >= montantMinimum
+                )
+                .toList();
+    }
+
     public List<Transaction> filtrerParPeriode(
             List<Transaction> transactions,
             LocalDate debut,
