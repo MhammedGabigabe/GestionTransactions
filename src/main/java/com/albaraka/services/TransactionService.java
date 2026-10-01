@@ -19,4 +19,8 @@ public class TransactionService {
     public void enregistrer(Transaction transaction) {
         transactionDAO.save(transaction);
     }
+
+    public void modifier(Transaction transaction) {
+        transactionDAO.update(transaction);
+    }
 }
