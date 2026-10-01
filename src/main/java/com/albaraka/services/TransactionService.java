@@ -2,6 +2,7 @@ package main.java.com.albaraka.services;
 
 import main.java.com.albaraka.dao.CompteDAO;
 import main.java.com.albaraka.dao.TransactionDAO;
+import main.java.com.albaraka.entites.Transaction;
 
 public class TransactionService {
     private final TransactionDAO transactionDAO;
@@ -13,5 +14,9 @@ public class TransactionService {
     ) {
         this.transactionDAO = transactionDAO;
         this.compteDAO = compteDAO;
+    }
+
+    public void enregistrer(Transaction transaction) {
+        transactionDAO.save(transaction);
     }
 }
