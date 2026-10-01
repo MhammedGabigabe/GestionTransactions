@@ -4,6 +4,8 @@ import main.java.com.albaraka.dao.CompteDAO;
 import main.java.com.albaraka.dao.TransactionDAO;
 import main.java.com.albaraka.entites.Transaction;
 
+import java.util.Optional;
+
 public class TransactionService {
     private final TransactionDAO transactionDAO;
     private final CompteDAO compteDAO;
@@ -26,5 +28,9 @@ public class TransactionService {
 
     public void supprimer(Long id) {
         transactionDAO.delete(id);
+    }
+
+    public Optional<Transaction> rechercherParId(Long id) {
+        return transactionDAO.findById(id);
     }
 }
