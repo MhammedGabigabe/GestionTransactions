@@ -3,6 +3,7 @@ package main.java.com.albaraka.services;
 import main.java.com.albaraka.dao.ClientDAO;
 import main.java.com.albaraka.entites.Client;
 
+import java.util.List;
 import java.util.Optional;
 
 public class ClientService {
@@ -26,5 +27,9 @@ public class ClientService {
 
     public Optional<Client> rechercherParId(Long id) {
         return clientDAO.findById(id);
+    }
+
+    public List<Client> listerTous() {
+        return clientDAO.findAll();
     }
 }
