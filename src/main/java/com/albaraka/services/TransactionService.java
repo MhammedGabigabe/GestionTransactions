@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.OptionalDouble;
 
 public class TransactionService {
     private final TransactionDAO transactionDAO;
@@ -102,5 +103,14 @@ public class TransactionService {
         return transactions.stream()
                 .mapToDouble(Transaction::montant)
                 .sum();
+    }
+
+    public OptionalDouble calculerMoyenne(
+            List<Transaction> transactions
+    ) {
+
+        return transactions.stream()
+                .mapToDouble(Transaction::montant)
+                .average();
     }
 }
