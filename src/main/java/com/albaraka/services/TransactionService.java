@@ -5,6 +5,7 @@ import main.java.com.albaraka.dao.TransactionDAO;
 import main.java.com.albaraka.entites.Transaction;
 import main.java.com.albaraka.entites.TypeTransaction;
 
+import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -66,6 +67,20 @@ public class TransactionService {
         return transactions.stream()
                 .filter(transaction ->
                         transaction.type() == type
+                )
+                .toList();
+    }
+
+    public List<Transaction> filtrerParPeriode(
+            List<Transaction> transactions,
+            LocalDate debut,
+            LocalDate fin
+    ) {
+
+        return transactions.stream()
+                .filter(transaction ->
+                        !transaction.date().isBefore(debut)
+                                && !transaction.date().isAfter(fin)
                 )
                 .toList();
     }
